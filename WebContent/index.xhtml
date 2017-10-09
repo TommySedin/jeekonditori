@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+<h:body>
+<h:form>
+	<p:dataTable value="#{bakeryBean.soldPastries}" var="p" editable="true" editMode="cell">
+		<f:facet name="header">Bakverk</f:facet>
+		<p:column headerText="Namn">
+			<h:outputText value="#{p.pastry.name}" />
+		</p:column>
+		<p:column headerText="Antal sålda">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{p.units}" />
+				</f:facet>
+				<f:facet name="input">
+					<h:inputText value="#{p.units}">
+						<p:ajax update="inkomst"/>
+					</h:inputText>
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+		<p:column headerText="Inkomst">
+			<h:outputText id="inkomst" value="#{p.units * p.pastry.sellPrice}" />
+		</p:column>
+	</p:dataTable>
+
+	<p:separator/>
+
+	<p:dataTable value="#{bakeryBean.employees}" var="e" editable="true" editMode="cell">
+		<f:facet name="header">Anställda</f:facet>
+		<p:column headerText="Namn">
+			<h:outputText value="#{e.name}" />
+		</p:column>
+		<p:column headerText="Lön">
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:inputText value="#{e.salary}" />
+				</f:facet>
+				<f:facet name="input">
+					<h:inputText value="#{e.salary}">
+						<p:ajax update="agavgift fackavgift"/>
+					</h:inputText>
+				</f:facet>
+			</p:cellEditor>
+		</p:column>
+		<p:column headerText="Arbetsgivaravgift">
+			<h:outputText id="agavgift" value="#{e.getEmployersFee()}" />
+		</p:column>
+		<p:column headerText="Fackavgifter">
+			<h:outputText id="fackavgift" value="#{e.getUnionFee()}" />
+		</p:column>
+	</p:dataTable>
+
+</h:form>
+</h:body>
+</html>
