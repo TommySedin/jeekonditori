@@ -42,10 +42,25 @@
 
 	<p:separator/>
 
+	<p:messages autoUpdate="true"/>
 	<p:dataTable id="employeeTable" value="#{bakeryBean.employees}" var="e" editable="true" editMode="cell">
 		<f:facet name="header">Anställda</f:facet>
 		<p:column headerText="Namn">
-			<h:outputText value="#{e.name}" />
+			<p:cellEditor>
+				<f:facet name="output">
+					<h:outputText value="#{e.name}" />
+				</f:facet>
+				<f:facet name="input">
+					<h:inputText id="employeeName" value="#{e.name}">
+						<p:ajax update="employeeTable"/>
+					</h:inputText>
+				</f:facet>
+			</p:cellEditor>
+			<f:facet name="footer">
+				<p:outputPanel style="text-align: left;">
+					<p:commandLink value="+" action="#{bakeryBean.newEmployee}" update="employeeTable"/>
+				</p:outputPanel>
+			</f:facet>
 		</p:column>
 		<p:column headerText="Lön">
 			<p:cellEditor>

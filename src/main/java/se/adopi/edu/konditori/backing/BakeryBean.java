@@ -11,6 +11,8 @@ import javax.inject.Named;
 import se.adopi.edu.konditori.Employee;
 import se.adopi.edu.konditori.Pastry;
 import se.adopi.edu.konditori.SoldPastry;
+import se.adopi.edu.konditori.pojo.PojoEmployee;
+import se.adopi.edu.konditori.pojo.PojoSeniorEmployee;
 
 @Named
 @SessionScoped
@@ -54,6 +56,10 @@ public class BakeryBean implements Serializable {
 
 	public List<Employee> getEmployees() {
 		return employees;
+	}
+	
+	public void newEmployee() {
+		employees.add(new PojoEmployee("", 0));
 	}
 	
 	public float getSumSalaries() {

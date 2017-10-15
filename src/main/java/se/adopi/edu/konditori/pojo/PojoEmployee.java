@@ -3,19 +3,27 @@ package se.adopi.edu.konditori.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import se.adopi.edu.konditori.Employee;
 
 public class PojoEmployee implements Employee {
+	@NotNull(message="Ge stackarn ett namn!")
+	@Size(min=2, message="Namnet måste vara längre än 2 bokstäver")
 	private String name;
 	private float salary;
 	
-	PojoEmployee(String name, float salary) {
+	public PojoEmployee(String name, float salary) {
 		this.name = name;
 		this.salary = salary;
 	}
 	@Override
 	public String getName() {
 		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override
