@@ -24,6 +24,8 @@ public class BakeryBean implements Serializable {
 	private List<Employee> employees;
 
 	private List<SoldPastry> soldPastries;
+	
+	private SoldPastry selectedPastry;
 
 	public List<SoldPastry> getSoldPastries() {
 		if (soldPastries == null) {
@@ -35,11 +37,47 @@ public class BakeryBean implements Serializable {
 		return soldPastries;
 	}
 
-	public void setSoldPastries(List<SoldPastry> soldPastries) {
-		this.soldPastries = soldPastries;
+	public float getSumSoldPastries() {
+		float sum = 0;
+		for (SoldPastry sp : soldPastries) {
+			sum += sp.getUnits() * sp.getPastry().getSellPrice();
+		}
+		return sum;
+	}
+
+	public SoldPastry getSelectedPastry() {
+		return selectedPastry;
+	}
+	public void setSelectedPastry(SoldPastry selectedPastry) {
+		this.selectedPastry = selectedPastry;
 	}
 
 	public List<Employee> getEmployees() {
 		return employees;
+	}
+	
+	public float getSumSalaries() {
+		float result = 0;
+		for (Employee e : employees) {
+			result += e.getSalary();
+		}
+		return result;
+	}
+	public float getSumEmployersFees() {
+		float result = 0;
+		for (Employee e : employees) {
+			result += e.getEmployersFee();
+		}
+		return result;
+	}
+	public float getSumUnionFees() {
+		float result = 0;
+		for (Employee e : employees) {
+			result += e.getUnionFee();
+		}
+		return result;
+	}
+	public float getTotalEmployeeCosts() {
+		return getSumSalaries() + getSumEmployersFees() + getSumUnionFees();  
 	}
 }

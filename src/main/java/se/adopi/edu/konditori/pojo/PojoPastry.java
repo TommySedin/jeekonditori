@@ -1,6 +1,8 @@
 package se.adopi.edu.konditori.pojo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,26 +10,14 @@ import java.util.Map;
 import se.adopi.edu.konditori.Pastry;
 
 public class PojoPastry implements Pastry {
-	private static class Tuple {
-		private Ingredient ingredient;
-		private float amount;
-		Tuple(Ingredient ingredient, float amount) {
-			this.ingredient = ingredient;
-			this.amount = amount;
-		}
-	}
-	
 	private String name;
 	private float sellPrice;
-	private Map<Ingredient, Float> ingredients;
+	private List<IngredientContent> ingredients;
 
-	private PojoPastry(String name, float sellPrice, Tuple... ingredients) {
+	private PojoPastry(String name, float sellPrice, IngredientContent... ingredients) {
 		this.name = name;
 		this.sellPrice = sellPrice;
-		this.ingredients = new HashMap<>();
-		for (Tuple t : ingredients) {
-			this.ingredients.put(t.ingredient, t.amount);
-		}
+		this.ingredients = new ArrayList<>(Arrays.asList(ingredients));
 	}
 
 	@Override
@@ -41,7 +31,7 @@ public class PojoPastry implements Pastry {
 	}
 
 	@Override
-	public Map<Ingredient, Float> getIngredients() {
+	public List<IngredientContent> getIngredients() {
 		return ingredients;
 	}
 
@@ -54,20 +44,20 @@ public class PojoPastry implements Pastry {
 		PojoIngredient milk = new PojoIngredient("Mjölk", 5f);
 
 		result.add(new PojoPastry("Kanelbulle", 20,
-						new Tuple(flour, 0.2f),
-						new Tuple(sugar, 0.15f),
-						new Tuple(milk, 0.1f),
-						new Tuple(egg, 0.1f)));
+						new IngredientContent(flour, 0.2f),
+						new IngredientContent(sugar, 0.15f),
+						new IngredientContent(milk, 0.1f),
+						new IngredientContent(egg, 0.1f)));
 		result.add(new PojoPastry("Sockerkaka", 10,
-						new Tuple(flour, 0.15f),
-						new Tuple(sugar, 0.15f),
-						new Tuple(milk, 0.1f),
-						new Tuple(egg, 0.2f)));
+						new IngredientContent(flour, 0.15f),
+						new IngredientContent(sugar, 0.15f),
+						new IngredientContent(milk, 0.1f),
+						new IngredientContent(egg, 0.2f)));
 		result.add(new PojoPastry("Punschrulle", 15,
-						new Tuple(flour, 0.1f),
-						new Tuple(sugar, 0.15f),
-						new Tuple(milk, 0.05f),
-						new Tuple(egg, 0.1f)));
+						new IngredientContent(flour, 0.1f),
+						new IngredientContent(sugar, 0.15f),
+						new IngredientContent(milk, 0.05f),
+						new IngredientContent(egg, 0.1f)));
 		
 		return result;
 	}
