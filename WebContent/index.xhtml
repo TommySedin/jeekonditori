@@ -8,9 +8,26 @@
 	xmlns:p="http://primefaces.org/ui">
 <h:head></h:head>
 <h:body>
-<h:form>
-	<p:dataTable value="#{bakeryBean.soldPastries}" var="p" editable="true" editMode="cell" sortBy="#{p.pastry.name}" selection="#{bakeryBean.selectedPastry}" rowKey="#{p}" selectionMode="single">
-		<p:ajax event="rowSelect" update="" onstart="PF('pastryDialog').show()"/>
+<h:form id="bakeryForm">
+	<p:dataTable
+			id="pastryTable"
+			value="#{bakeryBean.soldPastries}"
+			var="p"
+			editable="true"
+			editMode="cell"
+			sortBy="#{p.pastry.name}"
+			
+			scrollable="false"
+			
+			selection="#{bakeryBean.selectedPastry}"
+			rowKey="#{p}"
+			selectionMode="single">
+
+		<p:ajax
+			event="rowSelect"
+			update=":bakeryForm:pastryDialog"
+			onstart="PF('pastryDialog').show()"/>
+
 		<f:facet name="header">Bakverk</f:facet>
 		<p:column headerText="Namn">
 			<h:outputText value="#{p.pastry.name}" />
@@ -25,7 +42,7 @@
 				</f:facet>
 				<f:facet name="input">
 					<h:inputText value="#{p.units}">
-						<p:ajax update="inkomst pastrysum"/>
+						<p:ajax update="pastryTable"/>
 					</h:inputText>
 				</f:facet>
 			</p:cellEditor>
@@ -36,13 +53,15 @@
 					<h:outputText id="pastrysum" value="#{bakeryBean.sumSoldPastries}"/>
 				</p:outputPanel>
 			</f:facet>
-			<h:outputText id="inkomst" value="#{p.units * p.pastry.sellPrice}" />
+			<h:outputText id="inkomst" value="#{p.units * p.pastry.sellPrice}">
+				<f:convertNumber type="currency" currencySymbol="kr"/>
+			</h:outputText>
 		</p:column>
 	</p:dataTable>
 
 	<p:separator/>
 
-	<p:messages autoUpdate="true"/>
+	<p:messages for="" autoUpdate="true"/>
 	<p:dataTable id="employeeTable" value="#{bakeryBean.employees}" var="e" editable="true" editMode="cell">
 		<f:facet name="header">Anställda</f:facet>
 		<p:column headerText="Namn">
@@ -58,14 +77,17 @@
 			</p:cellEditor>
 			<f:facet name="footer">
 				<p:outputPanel style="text-align: left;">
-					<p:commandLink value="+" action="#{bakeryBean.newEmployee}" update="employeeTable"/>
+					<p:commandLink
+							value="+"
+							action="#{bakeryBean.newEmployee}"
+							update="employeeTable"/>
 				</p:outputPanel>
 			</f:facet>
 		</p:column>
 		<p:column headerText="Lön">
 			<p:cellEditor>
 				<f:facet name="output">
-					<h:inputText value="#{e.salary}" />
+					<h:outputText value="#{e.salary}"/>
 				</f:facet>
 				<f:facet name="input">
 					<h:inputText value="#{e.salary}">
@@ -97,8 +119,17 @@
 		</p:column>
 	</p:dataTable>
 
-	<p:dialog header="#{bakeryBean.selectedPastry.pastry.name}" id="pastryDialog" width="350" resizable="false" widgetVar="pastryDialog" dynamic="true">
-		<p:dataTable value="#{bakeryBean.selectedPastry.pastry.ingredients}" var="i">
+	<p:dialog
+			header="#{bakeryBean.selectedPastry.pastry.name}"
+			id="pastryDialog"
+			width="350"
+			resizable="false"
+			widgetVar="pastryDialog"
+			dynamic="true">
+		<p:dataTable
+			value="#{bakeryBean.selectedPastry.pastry.ingredients}"
+			var="i">
+			<h:outputText value="#{bakeryBean.selectedPastry.pastry.name}" />
 			<p:column headerText="Ingrediens"><h:outputText value="#{i.ingredient.name}"/></p:column>
 			<p:column headerText="Mängd"><h:outputText value="#{i.units}"/></p:column>
 		</p:dataTable>
