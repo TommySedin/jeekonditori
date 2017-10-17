@@ -91,7 +91,7 @@
 				</f:facet>
 				<f:facet name="input">
 					<h:inputText value="#{e.salary}">
-						<p:ajax update="employeeTable"/>
+						<p:ajax event="change" listener="#{bakeryBean.saveEmployee(e)}" update="employeeTable"/>
 					</h:inputText>
 				</f:facet>
 			</p:cellEditor>

@@ -1,33 +1,38 @@
 package se.adopi.edu.konditori.backing;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import se.adopi.edu.konditori.Employee;
 import se.adopi.edu.konditori.Pastry;
 import se.adopi.edu.konditori.SoldPastry;
+import se.adopi.edu.konditori.jpa.JPAEmployeeFacade;
+import se.adopi.edu.konditori.jpa.entities.JPAEmployee;
 import se.adopi.edu.konditori.pojo.PojoEmployee;
-import se.adopi.edu.konditori.pojo.PojoSeniorEmployee;
 
 @Named
-@SessionScoped
+@ViewScoped
 public class BakeryBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@EJB
+	private JPAEmployeeFacade employeeEJB;
+	private List<JPAEmployee> employees;
+
+
 	@Inject
 	private List<Pastry> pastryTypes;
-
-	@Inject
-	private List<Employee> employees;
-
-	private List<SoldPastry> soldPastries;
-	
+	private List<SoldPastry> soldPastries;	
 	private SoldPastry selectedPastry;
+
 
 	public List<SoldPastry> getSoldPastries() {
 		if (soldPastries == null) {
@@ -54,31 +59,40 @@ public class BakeryBean implements Serializable {
 		this.selectedPastry = selectedPastry;
 	}
 
-	public List<Employee> getEmployees() {
+
+	public List<JPAEmployee> getEmployees() {
+		if (employees == null) {
+			employees = employeeEJB.findAll();
+		}
 		return employees;
 	}
 	
 	public void newEmployee() {
-		employees.add(new PojoEmployee("", 0));
+		JPAEmployee e = new JPAEmployee("", 0);
+		employeeEJB.create(e);
+		employees.add(e);
+	}
+	public void saveEmployee(JPAEmployee e) {
+		employeeEJB.edit(e);
 	}
 	
 	public float getSumSalaries() {
 		float result = 0;
-		for (Employee e : employees) {
+		for (JPAEmployee e : getEmployees()) {
 			result += e.getSalary();
 		}
 		return result;
 	}
 	public float getSumEmployersFees() {
 		float result = 0;
-		for (Employee e : employees) {
+		for (JPAEmployee e : getEmployees()) {
 			result += e.getEmployersFee();
 		}
 		return result;
 	}
 	public float getSumUnionFees() {
 		float result = 0;
-		for (Employee e : employees) {
+		for (JPAEmployee e : getEmployees()) {
 			result += e.getUnionFee();
 		}
 		return result;
